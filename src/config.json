@@ -1,0 +1,10 @@
+{
+    "XMLPath": "http://mawaru.party:8000/mawaru.ogg.xspf",
+    "MP3XMLPath": "http://mawaru.party:8000/mawaru128.mp3.xspf",
+    "TitleFallback": "Unknown",
+    "JingleTitle" : "Mawaru radio!",
+    "JingleCustomMessage": "Thanks for listening!",
+    "NightTitle" : "Green Elephant The Best Night",
+    "RefreshTimeout": 5,
+    "DataserverPath": "http://mawaru.party:3001"
+}
