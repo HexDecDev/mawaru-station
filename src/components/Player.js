@@ -18,7 +18,9 @@ class Player extends Component
             soundPath: 'http://mawaru.party:8000/mawaru.ogg',
             paused: true,
             rightpanelHidden: true,
-            playUnblocked: false
+            playUnblocked: false,
+            firstShoted: false,
+            firstPlaybackStarted: false
         }
     }
 
@@ -40,12 +42,21 @@ class Player extends Component
     {
          if(player !== undefined) 
         {
-            if (!player.audioEl.paused)return 'stop';
-            else return 'play';
-            
+            if (!player.audioEl.paused) return 'stop';
+            else{
+                return 'play';
+            }              
         }
         else return 'play';
         
+    }
+
+    refreshTitle = () =>
+    {
+        var icon;
+        if (this.props.player.audioEl.paused) icon = '■';
+        else icon = '▶'
+        document.title = icon + " " + this.props.tabTitle;
     }
 
     waitForInit = () =>
@@ -55,11 +66,16 @@ class Player extends Component
 
     componentDidMount()
     {
-        setTimeout(() => {this.waitForInit()}, 3000)
+        document.title = this.props.tabTitle;
+        setTimeout(() => {this.waitForInit()}, 3000);
+        setTimeout(() => {this.refreshTitle()}, 3000);
+        this.interval = setInterval(() => this.refreshTitle(), this.props.refreshTimeout * 1000);
+        
     }
 
     render(){
         
+
         var prevSongsPlaylistName = 'prevSongs';
         var nextSongsPlaylistName = 'nextSongs';
         var streamLinksName = 'streamLinks';
@@ -104,6 +120,7 @@ class Player extends Component
 
                 
                 <Button 
+                    id = 'playButton'
                     loading = {!this.state.playUnblocked}
                     disabled = {!this.state.playUnblocked}
                     icon={playButtonIcon} 
@@ -116,12 +133,24 @@ class Player extends Component
                         {
                             if (this.props.player.audioEl.paused) 
                             {
-                                this.props.player.audioEl.src = this.state.soundPath;
-                                this.props.player.audioEl.play();
+                                //Я уверен, вы охуели от этого
+                                if (this.state.firstShoted)
+                                {
+                                    this.props.player.audioEl.src = this.props.playerPath;
+                                    this.props.player.audioEl.play();
+                                    this.refreshTitle();
+                                }
+                                else{
+                                    this.setState({firstShoted:true});
+                                    this.setState({playUnblocked:false});
+                                    setTimeout(() => {this.waitForInit()}, 2000);
+                                    this.refreshTitle();
+                                }
                             }
                             else
                             {
                                 this.props.player.audioEl.pause();
+                                this.refreshTitle();
                             }
                                 this.forceUpdate();
                                 this.setState({paused: this.props.player.audioEl.paused});

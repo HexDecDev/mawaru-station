@@ -1,5 +1,6 @@
 {
     "XMLPath": "http://mawaru.party:8000/mawaru.ogg.xspf",
+    "PlayerPath" : "http://mawaru.party:8000/mawaru.ogg",
     "MP3XMLPath": "http://mawaru.party:8000/mawaru128.mp3.xspf",
     "TitleFallback": "Unknown",
     "JingleTitle" : "Mawaru radio!",

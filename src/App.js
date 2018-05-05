@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import './WhiteButton.css';
 import './Slider.css';
-import {XMLPath, RefreshTimeout, DataserverPath, JingleTitle, JingleCustomMessage} from './config.json'
+import {XMLPath, PlayerPath, RefreshTimeout, DataserverPath, JingleTitle, JingleCustomMessage} from './config.json'
 import axios from 'axios'
 import ReactAudioPlayer from 'react-audio-player';
 
@@ -24,16 +24,18 @@ class App extends Component {
         streamSongName: '',
         steamListeners: '',
         streamPeakListeners: '',
-        dayPlaylist: [],
-        nightPlaylist: [],
-        prevTracksPlaylist: [['Loading...','Loading...'],['Loading...','Loading...']], //Я заебался, но без этого ничего работать не будет
+        dayPlaylist: ['Loading...','Loading...'],
+        nightPlaylist: ['Loading...','Loading...'],
+        prevTracksPlaylist: [['Loading...','Loading...'],['Loading...','Loading...'],['Loading...','Loading...'],['Loading...','Loading...']], //Я заебался, но без этого ничего работать не будет
         requestLink: '',
         getNameFromFile: false,
         coverLink: DataserverPath + '/covers/album.png',
         oldArtist: '', //пук пук
         oldTitle: '', //я слишком туп чтоб придумтаь что-то умнее
         oldFilename: '',
-        displayPreviousSong: ''
+        displayPreviousSong: '',
+        firstClickFired: false,
+        tabTitle: 'Mawaru Station is loading!'
     }
 }
 
@@ -73,12 +75,23 @@ getXMLinfo = () =>
       var listeners=resp.data.substring(resp.data.lastIndexOf("Current Listeners: ")+19,resp.data.lastIndexOf("Peak"));
       var peakListeners=resp.data.substring(resp.data.lastIndexOf("Peak Listeners: ")+16,resp.data.lastIndexOf("Stream"));
 
+      var tabTitle;
+
+      var clearString = this.state.prevTracksPlaylist[0][1];
+      clearString = clearString.replace(/%20/g, '  ');
+
+      if (title === "No Title") tabTitle = clearString;
+      else  tabTitle = artist + " - " + title;
+
+
+
       this.setState({
         streamArtist:artist,
         streamSongName:title,
         steamListeners:listeners,
         steamPeakListeners:peakListeners,
-        streamData:resp.data
+        streamData:resp.data,
+        tabTitle: tabTitle
 
       } );
 
@@ -91,6 +104,7 @@ getXMLinfo = () =>
         setTimeout(() => {this.setState({coverLink: coverLink + '?' + new Date()})}, 10000);
         setTimeout(() => {this.setState({oldArtist:artist, oldTitle:title, oldFilename: this.state.prevTracksPlaylist[0][1]})}, 10000);
       }
+
     })
 }
 
@@ -148,6 +162,18 @@ getPlaylists = () =>
   )
 }
 
+firstClickDetector = () => {
+//Ебал в рот я ваш гугель хром и матерей тех, кто говнокодил автоплей полиси.
+  this.setState({firstClickFired:true});
+  var playButton = document.getElementById('playButton');
+  playButton.removeEventListener("click", this.firstClickDetector);
+}
+
+clickListener = () => {
+  var playButton = document.getElementById('playButton');
+  playButton.addEventListener("click", this.firstClickDetector);
+}
+
 
 refreshAllData = () => 
 {
@@ -159,10 +185,13 @@ componentDidMount = () =>
 {
     this.refreshAllData();
     this.interval = setInterval(() => this.refreshAllData(), RefreshTimeout * 1000);
+    this.clickListener();
+    
     
 }
 
 render() {
+
 
     var clearString = this.state.prevTracksPlaylist[0][1];
     clearString = clearString.replace(/%20/g, '  ');
@@ -172,6 +201,7 @@ render() {
 
     if (displayTitle.indexOf('file_') !== -1) displayTitle = 'Telegram Request'
 
+
     return (
       <div id="App">
         <div id = 'Header'>
@@ -180,13 +210,16 @@ render() {
             MAWARU STATION
           </div>
 
-        <ReactAudioPlayer id = 'qqwsa' crossorigin="anonymous" src={this.state.soundPath} ref={(element) => { this.player = element; }} />
+        <ReactAudioPlayer id = 'qqwsa' autoPlay = {false} crossOrigin = 'anonymous' src={PlayerPath} ref={(element) => { this.player = element; }} />
 
         <Player 
           prevTracksPlaylist = {this.state.prevTracksPlaylist}
           dayPlaylist = {this.state.dayPlaylist}
           nightPlaylist = {this.state.nightPlaylist}
           player = {this.player}
+          playerPath = {PlayerPath}
+          tabTitle = {this.state.tabTitle}
+          refreshTimeout = {RefreshTimeout}
         />
 
  
@@ -199,6 +232,8 @@ render() {
           displayTitle = {displayTitle}
           displayArtist = {displayArtist}
           player = {this.player}
+          firstClickFired = {this.state.firstClickFired}
+          playerPath = {PlayerPath}
         />
         
 

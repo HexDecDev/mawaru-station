@@ -19,7 +19,7 @@ class FFT extends Component
     {
         if (!this.state.canvasReady)
         {
-            if (this.props.player !== undefined && !this.state.canvasReady) this.createVisualization();
+            if (this.props.player !== undefined && !this.state.canvasReady && this.props.firstClickFired && this.props.player.audioEl.paused) this.createVisualization();
             setTimeout(() => {this.checkIsReady()}, 1000); 
         }
     }
@@ -31,29 +31,35 @@ class FFT extends Component
         var analyser = context.createAnalyser();
         var canvas = this.refs.analyzerCanvas;
         var ctx = canvas.getContext('2d');
-        var audio = this.props.player;
-        audio.audioEl.crossOrigin = "anonymous";
-        var audioSrc = context.createMediaElementSource(audio.audioEl);
+        var audio = this.props.player.audioEl;
+
+        audio.src = 'http://mawaru.party:8000/mawaru.ogg';
+        
+        audio.crossOrigin = 'Anonymous';
+        audio.play();
+
+        var audioSrc = context.createMediaElementSource(audio);
+       
         audioSrc.connect(analyser);
         audioSrc.connect(context.destination);
         analyser.connect(context.destination);
 
-        this.setState({canvasReady:true});
 
         
+
         function renderFrame(screenWidth){
             var freqData = new Float32Array(analyser.frequencyBinCount)
             requestAnimationFrame(renderFrame)
             analyser.fftSize = 2048;
             analyser.getFloatFrequencyData(freqData)
             ctx.clearRect(0, 0, canvas.width, canvas.height)
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
 
             
             var bar_width = 3;
             var bar_spacing = 1;
             var bars = Math.trunc((canvas.width / (bar_width + bar_spacing))+2);
-            
+
             for (var i = 0; i < bars; i++) {
                 var bar_x = i * (bar_width + bar_spacing);
                 
@@ -62,6 +68,8 @@ class FFT extends Component
             }
         };
         renderFrame(this.props.windowWidth)
+        this.setState({canvasReady:true});
+
 
     }
 

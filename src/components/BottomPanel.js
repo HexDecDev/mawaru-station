@@ -7,6 +7,10 @@ import FFT from './FFT'
 */
 class BottomPanel extends Component
 {
+
+    
+
+
     render(){
 
 
@@ -16,7 +20,7 @@ class BottomPanel extends Component
         return(
 
             <div id = 'Player'>
-            <FFT player = {this.props.player}/>
+            <FFT player = {this.props.player} firstClickFired = {this.props.firstClickFired} playerPath = {this.props.playerPath}/>
             <div id = 'PlayerHeader'>
                 <div id = "AlbumCover"><Image key={new Date()} src={this.props.coverLink} size='medium' /></div>
                 <div id = 'SongInfo'>
