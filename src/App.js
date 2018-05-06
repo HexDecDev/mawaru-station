@@ -35,7 +35,8 @@ class App extends Component {
         oldFilename: '',
         displayPreviousSong: '',
         firstClickFired: false,
-        tabTitle: 'Mawaru Station is loading!'
+        tabTitle: 'Mawaru Station is loading!',
+        onSafari: false
     }
 }
 
@@ -186,8 +187,19 @@ componentDidMount = () =>
     this.refreshAllData();
     this.interval = setInterval(() => this.refreshAllData(), RefreshTimeout * 1000);
     this.clickListener();
+    this.safariDetect();
     
     
+}
+
+
+safariDetect = () =>
+{
+  if (typeof webkitAudioContext !== 'undefined')
+  {
+    this.setState({onSafari:true})
+  }
+  else this.setState({onSafari:false})
 }
 
 render() {
@@ -201,16 +213,19 @@ render() {
 
     if (displayTitle.indexOf('file_') !== -1) displayTitle = 'Telegram Request'
 
+    var volume = 0;
+    var volumeSlider = document.getElementById('volumeSlider');
+    if (volumeSlider !== null) volume = Number(volumeSlider.value);
 
     return (
       <div id="App">
         <div id = 'Header'>
 
           <div id = 'Logo'>
-            MAWARU STATION
+            MAWARU STATION!
           </div>
 
-        <ReactAudioPlayer id = 'qqwsa' autoPlay = {false} crossOrigin = 'anonymous' src={PlayerPath} ref={(element) => { this.player = element; }} />
+        <ReactAudioPlayer id = 'qqwsa' volume = {volume} autoPlay = {false} crossOrigin = 'anonymous' src={PlayerPath} ref={(element) => { this.player = element; }} />
 
         <Player 
           prevTracksPlaylist = {this.state.prevTracksPlaylist}
@@ -220,6 +235,7 @@ render() {
           playerPath = {PlayerPath}
           tabTitle = {this.state.tabTitle}
           refreshTimeout = {RefreshTimeout}
+          onSafari = {this.state.onSafari}
         />
 
  

@@ -64,6 +64,7 @@ class Player extends Component
         this.setState({playUnblocked:true})
     }
 
+
     componentDidMount()
     {
         document.title = this.props.tabTitle;
@@ -71,6 +72,15 @@ class Player extends Component
         setTimeout(() => {this.refreshTitle()}, 3000);
         this.interval = setInterval(() => this.refreshTitle(), this.props.refreshTimeout * 1000);
         
+    }
+
+
+    setVolume = (vol) => {
+
+        
+        this.setState({ volume: vol});
+        if (this.props.player !== undefined && Number(this.state.volume) < 1) this.props.player.audioEl.volume = Number(vol);
+
     }
 
     render(){
@@ -84,7 +94,7 @@ class Player extends Component
         var prevSongsPlaylist =  <PreviousSongs playlist = {this.props.prevTracksPlaylist} />
         var nextSongsPlaylist =  <NextSongs playlist = {this.props.dayPlaylist} />
         var streamLinks = <StreamLinks />
-            
+        
         switch (this.state.activeRightPanel) {
 
             case prevSongsPlaylistName:
@@ -108,18 +118,8 @@ class Player extends Component
         const hiddenMenu = {opacity: 0, maxHeight:0};
         const visibleMenu = {};
 
-        if (this.props.player !== undefined) this.props.player.audioEl.volume = Number(this.state.volume);
-        
-        return(
-            //Изначально я хотел разнести это все еще по отдельным файлам, но потом так впадлу стало подрубать редакс...
-            <div id = 'PlayerWrap'> 
-
-            
-
-            <div id = 'PlayerControls'>
-
-                
-                <Button 
+        var playerControlsNormal =  <div id = 'PlayerControls'>
+          <Button 
                     id = 'playButton'
                     loading = {!this.state.playUnblocked}
                     disabled = {!this.state.playUnblocked}
@@ -167,11 +167,16 @@ class Player extends Component
                         circular 
                         basic 
                         color = 'black' 
-                        onClick = { () => this.setState({ volume:0})}
+                        onClick = { ()=>this.setVolume(0)}
                         
                     />
                     <div id = 'VolumeSlider'>
-                        <input type="range" value = {this.state.volume} min="0" max="1" step="0.01" onChange = { (e)=> this.setState({ volume: e.target.value})} />
+                        <input  id = 'volumeSlider' type="range" 
+                                value = {this.state.volume} 
+                                min="0" 
+                                max="0.95" 
+                                step="0.01" 
+                                onChange = { (e)=>this.setVolume(e.target.value) } />
                     </div>
                     <Button 
                         icon='volume up' 
@@ -179,11 +184,24 @@ class Player extends Component
                         circular 
                         basic 
                         color = 'black'
-                        onClick = { () => this.setState({ volume:1})} 
+                        onClick = { ()=>this.setVolume(.95)} 
                     /> 
                 </div>
+        </div>
+        
+        var playerControlsSafari = <div id = 'PlayerControls'> <audio
+            src='http://mawaru.party:8000/mawaru128.mp3'  controls="controls" >
+        Ваш браузер не поддерживает <code>audio</code> элемент. 
+        </audio> </div>
+        
 
-            </div>
+        var playerControlsToRender = (this.props.onSafari) ? playerControlsSafari : playerControlsNormal;
+
+        return(
+            //Изначально я хотел разнести это все еще по отдельным файлам, но потом так впадлу стало подрубать редакс...
+            <div id = 'PlayerWrap'> 
+
+                {playerControlsToRender}
 
             <div id ='ButtonContainer'>
 
