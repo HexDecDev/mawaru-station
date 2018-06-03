@@ -1,6 +1,6 @@
 import mongoose from'mongoose';
 mongoose.Promise = global.Promise;
-var db = mongoose.connection.db;
+var db = mongoose.connection;
 const Schema = mongoose.Schema;
 
 
@@ -50,6 +50,12 @@ export function GenerateDB(array) {
     });
 
     return ('done');
+}
+
+
+
+export function GetTracksList(){
+    return daytracks.find({});
 }
 
 

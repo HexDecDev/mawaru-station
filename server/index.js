@@ -73,10 +73,13 @@ function listTracks(res){
 
 
 
-app.get('/listtracks', function (req, res) {
+app.get('/generatedb', function (req, res) {
   listTracks(res);
 });
 
+app.get('/trackslist', function (req, res) {
+  TracksDatabase.GetTracksList().then( data => {res.send(data) } )
+});
 
 
 PlayerStatus.ConnectToDB();

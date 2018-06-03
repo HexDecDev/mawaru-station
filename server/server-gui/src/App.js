@@ -23,14 +23,15 @@ class App extends Component {
   }
 
   listFiles = () => {
-    axios.get('http://192.168.1.30:3001/listtracks').then(
-      data => this.setState({daySongs : data.data})
+    axios.get('http://192.168.1.30:3001/trackslist').then(
+      data => this.setState({daySongs : data.data}) 
+      //console.log(data.data)
     )
   }
 
 
   componentDidMount(){
-    //this.listFiles();
+    this.listFiles();
   }
 
   render() {
@@ -45,13 +46,20 @@ class App extends Component {
           <thead>
             <tr>
               <th>#</th>
+              <th>Play Count</th>
+              <th>Track Rating</th>
               <th>Path</th>
             </tr>
           </thead>
 
           <tbody>
               {this.state.daySongs.map((data, index) =>
-                <SongTable key = {Math.random() + index} data = {data} index = {index} ></SongTable>
+                <SongTable 
+                      key = {Math.random() + index} 
+                      playCount = {data.playCount} 
+                      data = {data.path} 
+                      rating = {data.rating}
+                      index = {index} ></SongTable>
               )}
           </tbody>
         </Table>
