@@ -9,20 +9,23 @@
 import * as CoverDelivery from './app/CoverDelivery'; 
 import * as AdminControls from './app/AdminControls';
 import * as PlayerStatus from './app/PlayerStatus';
+import * as TracksDatabase from './app/TracksDatabase';
 import express from 'express';
 import cors from 'cors';
 import axios from 'axios';
 import download from 'image-downloader';
 import bodyParser from 'body-parser';
 import Telnet from 'telnet-client'
-
-
+const { spawn, exec } = require('child_process');
 
 var connection = new Telnet();
 var app = express();
 const songsToDisplay = 6;
 const enableCoverDelivery = false; //false - отключить сервис доставки обложек.
 var params = { host: 'localhost', port: 5657, timeout: 1500 }
+
+
+
 
 
 app.use( bodyParser.json() ); 
@@ -56,6 +59,25 @@ app.get('/', function (req, res) {
   })
 
 });
+
+
+function listTracks(res){
+  const find = exec('find /var/radio/music -type f -name *.mp3', (e, stdout, stderr)=>{
+    //res.send(stdout.split('\n'));
+    TracksDatabase.GenerateDB(stdout.split('\n'));
+    res.send('work')
+    
+  })
+  
+}
+
+
+
+app.get('/listtracks', function (req, res) {
+  listTracks(res);
+});
+
+
 
 PlayerStatus.ConnectToDB();
 app.listen(3001, function () { console.log('Liquidsoap telnet-rest server started on port 3001!');});
