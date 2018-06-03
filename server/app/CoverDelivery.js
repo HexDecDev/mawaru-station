@@ -58,7 +58,9 @@ export function updateCover(connection, params, axios, download)
             }).catch((err) => {
                 throw err
             })
-          })
+          }).catch((err) => {
+            throw err
+        })
         }
       })
       

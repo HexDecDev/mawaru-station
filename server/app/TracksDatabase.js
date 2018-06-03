@@ -7,10 +7,10 @@ const Schema = mongoose.Schema;
 const collections = ['music', 'jin', 'night']
 
 const Track = new Schema({
-    path     : { type: String,  required: true },
-    playCount : {type : Number, required : true},
-    tags: {type: [String], required : true},
-    rating: {type: Number}
+    path        : { type: String,  required: true },
+    playCount   : {type : Number, required : true},
+    tags        : {type: [String], required : true},
+    rating      : {type: Number}
 });
 
 const DayMusic = mongoose.model('DayMusic', Track);

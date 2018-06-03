@@ -78,7 +78,10 @@ getXMLinfo = () =>
 
       var tabTitle;
 
-      var clearString = this.state.prevTracksPlaylist[0][1];
+      var clearString = '---'
+
+      if (this.state.prevTracksPlaylist !== 'undefined' && this.state.prevTracksPlaylist[0] !== 'undefined')
+        clearString = this.state.prevTracksPlaylist[0][1];
       clearString = clearString.replace(/%20/g, '  ');
 
       if (title === "No Title") tabTitle = clearString;
@@ -204,8 +207,10 @@ safariDetect = () =>
 
 render() {
 
+    var clearString = '---'
 
-    var clearString = this.state.prevTracksPlaylist[0][1];
+    if (this.state.prevTracksPlaylist !== 'undefined' && this.state.prevTracksPlaylist[0] !== 'undefined')
+      clearString = this.state.prevTracksPlaylist[0][1];
     clearString = clearString.replace(/%20/g, '  ');
 
     var displayTitle = (this.state.getNameFromFile) ? clearString : this.state.streamSongName;

@@ -20,7 +20,8 @@ import Telnet from 'telnet-client'
 
 var connection = new Telnet();
 var app = express();
-const songsToDisplay = 6; 
+const songsToDisplay = 6;
+const enableCoverDelivery = false; //false - отключить сервис доставки обложек.
 var params = { host: 'localhost', port: 5657, timeout: 1500 }
 
 
@@ -63,6 +64,6 @@ process.on('uncaughtException', function (err) { console.log('Caught exception: 
 
 
   
-setInterval(CoverDelivery.updateCover, 5000, connection, params, axios, download);
+if (enableCoverDelivery) setInterval(CoverDelivery.updateCover, 5000, connection, params, axios, download);
 setInterval(PlayerStatus.playerData, 6000, connection, params);
 
