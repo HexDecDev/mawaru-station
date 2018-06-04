@@ -31,7 +31,9 @@ html {
 body
 {
   min-height:100%;
-  background: url('https://www.desktophut.com/wp-content/uploads/2018/02/4K-Moving-Stars-Live-Wallpaper-1.jpg') no-repeat center center fixed; 
+  background-color: aquamarine;
+  background: url('./images/wallpaper.jpg') no-repeat center center fixed; 
+
   position: absolute; 
   height: 100%; 
   width: 100%;
