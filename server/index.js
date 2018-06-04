@@ -77,8 +77,8 @@ app.get('/generatedb/:folder', function (req, res) {
   listTracks(res, req.params.folder);
 });
 
-app.get('/trackslist', function (req, res) {
-  TracksDatabase.GetTracksList().then( data => {res.send(data) } )
+app.post('/trackslist', function (req, res) {
+  TracksDatabase.GetTracksList(req.body.folder).then( data => {res.send(data) } )
 });
 
 

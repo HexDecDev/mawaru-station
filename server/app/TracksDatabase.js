@@ -125,8 +125,9 @@ export function GenerateDB(folder, array) {
 
 
 
-export function GetTracksList(){
-    return daytracks.find({});
+export function GetTracksList(folder){
+    var collection = CollectionsWrapper(folder);
+    return collection.find({});
 }
 
 
