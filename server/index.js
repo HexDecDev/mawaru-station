@@ -61,11 +61,11 @@ app.get('/', function (req, res) {
 });
 
 
-function listTracks(res){
-  const find = exec('find /var/radio/music -type f -name *.mp3', (e, stdout, stderr)=>{
+function listTracks(res, folder){
+  const find = exec(`find /var/radio/${folder} -type f -name *.mp3`, (e, stdout, stderr)=>{
     //res.send(stdout.split('\n'));
-    TracksDatabase.GenerateDB(stdout.split('\n'));
-    res.send('work')
+    TracksDatabase.GenerateDB(folder, stdout.split('\n'));
+    res.send("Check console output")
     
   })
   
@@ -73,8 +73,8 @@ function listTracks(res){
 
 
 
-app.get('/generatedb', function (req, res) {
-  listTracks(res);
+app.get('/generatedb/:folder', function (req, res) {
+  listTracks(res, req.params.folder);
 });
 
 app.get('/trackslist', function (req, res) {
