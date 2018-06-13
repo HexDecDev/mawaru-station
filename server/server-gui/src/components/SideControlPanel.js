@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactAudioPlayer from 'react-audio-player';
-import { Button } from 'semantic-ui-react'
+import { Button, Divider } from 'semantic-ui-react'
 
 import './Slider.css';
 import './SidePanel.css';
@@ -157,7 +157,30 @@ class SideControlPanel extends Component {
                             </div>
                 </div>
 
+
+                
+
                 </div>
+
+                <Divider className = 'SidePanelDivider' horizontal inverted> Управление эфиром </Divider>
+                
+                <div id = 'BroadcastControl' className = 'ButtonContainer' >
+                <Button.Group fluid>
+                    <Button inverted className = 'SidePanelButton' >One</Button>
+                    <Button inverted className = 'SidePanelButton' >Two</Button>
+                </Button.Group>
+                </div>
+
+                <Divider className = 'SidePanelDivider' horizontal inverted> Обновить плейлисты </Divider>
+
+                <div id = 'RefreshPlaylists' className = 'ButtonContainer'>
+                <Button.Group fluid>
+                    <Button inverted className = 'SidePanelButton' >One</Button>
+                    <Button inverted className = 'SidePanelButton' >Two</Button>
+                    <Button inverted className = 'SidePanelButton' >Three</Button>
+                </Button.Group>
+                </div>
+
 
             </div>
         )
