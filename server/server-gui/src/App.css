@@ -1,11 +1,35 @@
+body, html{height:100%}
+
+@font-face {
+  font-family: Streamster; 
+  src: url(./fonts/Streamster.ttf); 
+}
+
+@font-face {
+  font-family: EvolveThin; 
+  src: url(./fonts/thin.otf); 
+}
+
+@font-face {
+  font-family: WebServeroff; 
+  src: url(./fonts/WebServeroff.ttf); 
+}
+
+
 .App {
   text-align: center;
+  background: url('http://getwallpapers.com/wallpaper/full/3/e/4/366992.jpg');
+  background-size: cover;
+  height: 100%;
+  position:absolute;
+  width: 100%;
 }
 
 
 .App-header {
   background-color: #222;
-  padding: 20px;
+  height: 50px;
+  padding-top: 12px;
   color: white;
 }
 
@@ -16,3 +40,34 @@
 .App-intro {
   font-size: large;
 }
+
+.App-content{
+  height: 100%;
+  display: flex;
+  justify-content:center;
+}
+
+#TrackList{
+  padding-top: 50px;
+  width: 1200px;
+}
+
+#SideControlPanel{
+  width: 300px;
+  background-color: rgba(57, 0, 41, 0.708);
+  margin-right: 50px;
+}
+
+.TrackList-content-container
+{
+  height: calc(100% - 100px);
+
+
+}
+
+.TrackList-content{
+  height: calc(100% - 0px);
+  overflow-y: scroll;
+  
+}
+

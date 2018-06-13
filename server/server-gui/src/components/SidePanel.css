@@ -1,0 +1,62 @@
+#Logo{
+    padding-top: 50px;
+}
+
+#LogoMain{
+    color: rgb(0, 229, 255);
+    text-shadow: 0 0 15px rgb(0, 255, 238), 0 0 15px rgb(0, 255, 238);
+    font-family: EvolveThin; 
+    font-size: 45px;
+    line-height: 38px;
+  
+}
+
+#LogoSub{
+    padding-top: 10px;
+    color: rgb(194, 0, 172);
+    font-family: Streamster; 
+    font-size: 35px;
+}
+
+#Player{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    height: 60px;
+}
+
+#PlayerControls
+{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#Volume
+{
+    padding-left: 5px;
+    width: 180px;
+}
+
+#playButton
+{
+    
+    box-shadow: 0 0 0 2px rgb(194, 0, 172) inset!important;
+    color: rgb(194, 0, 172);
+}
+
+#playButton:focus
+{
+    
+    box-shadow: 0 0 0 2px rgb(194, 0, 172) inset!important;
+    background-color: rgb(194, 0, 172);
+    color:#fff;
+}
+
+#playButton:hover
+{
+    box-shadow: 0 0 15px rgb(194, 0, 172), 0 0 15px rgb(194, 0, 172)!important;
+    background-color: rgb(194, 0, 172);
+    color:#fff;
+}
